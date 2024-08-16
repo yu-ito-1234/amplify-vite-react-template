@@ -1,40 +1,50 @@
-import { useEffect, useState } from "react";
-import type { Schema } from "../amplify/data/resource";
-import { generateClient } from "aws-amplify/data";
+import "./App.css";
 
-const client = generateClient<Schema>();
 
-function App() {
-  const [todos, setTodos] = useState<Array<Schema["Todo"]["type"]>>([]);
-
-  useEffect(() => {
-    client.models.Todo.observeQuery().subscribe({
-      next: (data) => setTodos([...data.items]),
-    });
-  }, []);
-
-  function createTodo() {
-    client.models.Todo.create({ content: window.prompt("Todo content") });
-  }
-
+export default function App() {
+  
   return (
-    <main>
-      <h1>My todos</h1>
-      <button onClick={createTodo}>+ new</button>
-      <ul>
-        {todos.map((todo) => (
-          <li key={todo.id}>{todo.content}</li>
-        ))}
-      </ul>
-      <div>
-        🥳 App successfully hosted. Try creating a new todo.
-        <br />
-        <a href="https://docs.amplify.aws/react/start/quickstart/#make-frontend-updates">
-          Review next step of this tutorial.
-        </a>
+    <div>
+      {/* ヘッダー */}
+      <div className='header'>
+        <div className='header-logo'>
+          マイページ
+        </div>
       </div>
-    </main>
+      {/* メイン */}
+      <div  className="body">   
+        <div className="form">
+          <p className="label">ユーザー名</p>
+          <p  className="content">×○△</p>
+        </div>
+        <div className="form">
+          <p className="label">性別</p>
+          <p className="content">○</p>
+        </div>
+        <div className="form">
+        <p className="label">生年月日</p>
+        <p className="content">yyyy年mm月dd日</p>
+        </div>
+        <div className="form">
+        <p className="label">身長</p>
+        <p className="content">●●cm</p>
+        </div>
+        <div className="form">
+        <p className="label">体重</p>
+        <p className="content">××kg</p>
+        </div>
+        <div className="form">
+        <p className="label">普段の運動量</p>
+        <p className="content">●●●●</p>
+        </div>
+        <button className="btn-psw">パスワード変更</button>
+      </div>
+      {/* フッター */}
+      <div className='footer'>
+        <img src="/chat.svg" className='svg'></img>
+        <img src="/calender.svg" className='svg'></img>
+        <img src="/future.svg" className='svg'></img>
+      </div>
+    </div>
   );
 }
-
-export default App;
