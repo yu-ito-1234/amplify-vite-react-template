@@ -1,8 +1,26 @@
 import "./App.css";
-
+import { InvokeCommand, LambdaClient } from '@aws-sdk/client-lambda'
+import { fetchAuthSession } from 'aws-amplify/auth'
+import outputs from "../amplify_outputs.json"
+import { useState } from 'react'
 
 export default function App() {
+  const [text, setText] = useState("")
+  async function getUserInfoLambda() {
+    const awsRegion = outputs.auth.aws_region
+    const functionName = outputs.custom.getUserInfoLambdaFunctionName
+    const { credentials } = await fetchAuthSession()
+    const labmda = new LambdaClient({ credentials: credentials, region: awsRegion })
+    const command = new InvokeCommand({
+      FunctionName: functionName,
+    });
+    const apiResponse = await labmda.send(command);
   
+    if (apiResponse.Payload) {
+      const payload = JSON.parse(new TextDecoder().decode(apiResponse.Payload))
+      setText(payload.message)
+    }
+  }
   return (
     <div>
       {/* ヘッダー */}
@@ -37,7 +55,8 @@ export default function App() {
         <p className="label">普段の運動量</p>
         <p className="content">●●●●</p>
         </div>
-        <button className="btn-psw">パスワード変更</button>
+        <button className="btn-psw" onClick={getUserInfoLambda}>パスワード変更</button>
+        <p>{text}</p>
       </div>
       {/* フッター */}
       <div className='footer'>
