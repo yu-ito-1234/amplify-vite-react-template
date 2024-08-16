@@ -9,6 +9,10 @@ const backend = defineBackend({
   getUserInfoLambda,
 });
 
+// Lambdaを呼び出すロールを付与
+const authenticatedUserIamRole = backend.auth.resources.authenticatedUserIamRole;
+backend.getUserInfoLambda.resources.lambda.grantInvoke(authenticatedUserIamRole);
+
 // フロントエンドからLambdaを呼び出せるように設定
 backend.addOutput({
   custom: {
