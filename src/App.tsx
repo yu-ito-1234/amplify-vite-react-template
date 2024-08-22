@@ -3,6 +3,7 @@ import { InvokeCommand, LambdaClient } from '@aws-sdk/client-lambda'
 import { fetchAuthSession } from 'aws-amplify/auth'
 import outputs from "../amplify_outputs.json"
 import { useState } from 'react'
+import { Button } from '@aws-amplify/ui-react';
 
 export default function App() {
   const [text, setText] = useState("")
@@ -55,7 +56,7 @@ export default function App() {
         <p className="label">普段の運動量</p>
         <p className="content">●●●●</p>
         </div>
-        <button className="btn-psw" onClick={getUserInfoLambda}>パスワード変更</button>
+        <Button className="btn-psw" onClick={getUserInfoLambda}>パスワード変更</Button>
         <p>{text}</p>
       </div>
       {/* フッター */}
